@@ -88,7 +88,15 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate image");
+        // HTTP 상태 코드에 따른 특정 오류 처리
+        if (response.status === 429) {
+          toast.error("Rate limit exceeded. Please wait a moment before trying again.");
+          return;
+        }
+        
+        // 다른 HTTP 오류에 대한 처리
+        const errorData = await response.json().catch(() => ({ error: "Failed to generate image" }));
+        throw new Error(errorData.error || "Failed to generate image");
       }
 
       const data = await response.json();
@@ -121,7 +129,19 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error generating image:", error);
-      toast.error("Failed to generate image");
+      
+      // 사용자 친화적인 오류 메시지 표시
+      const errorMessage = error instanceof Error ? error.message : "Failed to generate image";
+      
+      if (errorMessage.includes("content policy")) {
+        toast.error("Your prompt may violate content policy. Please modify and try again.");
+      } else if (errorMessage.includes("rate limit")) {
+        toast.error("Rate limit reached. Please wait a moment and try again.");
+      } else {
+        toast.error(errorMessage);
+      }
+      
+      // 자동 재시도 설정에 대한 UI 추가도 고려할 수 있습니다
     } finally {
       setIsLoading(false);
     }
