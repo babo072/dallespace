@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { ImageDisplay } from "@/components/ImageDisplay";
 import { deleteImage } from "@/lib/db";
 import { toast } from "sonner";

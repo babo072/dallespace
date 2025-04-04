@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Download, Edit, Trash2, Copy, Undo2, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,11 +70,14 @@ export function ImageDisplay({
       <CardContent className="p-0 relative">
         <div className="relative aspect-square">
           {!imgError ? (
-            <img
+            <Image
               src={imageUrl}
               alt={displayPrompt.substring(0, 50) + "..."}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
               onError={handleImageError}
+              unoptimized // OpenAI 이미지는 외부 URL이므로 최적화 비활성화
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
@@ -132,11 +136,14 @@ export function ImageDisplay({
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                    <img
+                    <Image
                       src={imageUrl}
                       alt={displayPrompt.substring(0, 50) + "..."}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
                       onError={handleImageError}
+                      unoptimized
                     />
                   </div>
                   <Separator />

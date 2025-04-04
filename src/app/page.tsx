@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { Header } from "@/components/Header";
 import { PromptForm } from "@/components/PromptForm";
 import { ImageGallery, GeneratedImage } from "@/components/ImageGallery";

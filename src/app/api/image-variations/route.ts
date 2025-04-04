@@ -31,10 +31,11 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(response);
-  } catch (error: any) {
-    console.error("Error generating variations:", error);
+  } catch (error: unknown) {
+    console.error("Error generating image variation:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to generate image variation";
     return NextResponse.json(
-      { error: error.message || "Failed to generate variations" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

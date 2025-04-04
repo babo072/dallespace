@@ -34,10 +34,11 @@ export async function POST(req: Request) {
     return NextResponse.json({
       enhancedPrompt: response.choices[0].message.content
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error enhancing prompt:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to enhance prompt";
     return NextResponse.json(
-      { error: error.message || "Failed to enhance prompt" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

@@ -3,14 +3,13 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { ImageGallery, GeneratedImage } from "@/components/ImageGallery";
-import { saveImage, clearAllImages, getAllImages } from "@/lib/db";
+import { saveImage, clearAllImages, getAllImages, deleteImage } from "@/lib/db";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
 export default function GalleryPage() {
   const [refreshGallery, setRefreshGallery] = useState(0);
-  const [isGenerating, setIsGenerating] = useState(false);
   const [images, setImages] = useState<GeneratedImage[]>([]);
   
   // 이미지 목록 로드
@@ -43,8 +42,6 @@ export default function GalleryPage() {
   
   const handleEditImage = async (prompt: string, referenceImageUrl: string) => {
     try {
-      setIsGenerating(true);
-      
       const response = await fetch("/api/image-variations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,8 +74,6 @@ export default function GalleryPage() {
     } catch (error) {
       console.error("Error creating image variation:", error);
       toast.error("Failed to create image variation");
-    } finally {
-      setIsGenerating(false);
     }
   };
   
