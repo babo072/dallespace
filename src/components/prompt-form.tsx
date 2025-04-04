@@ -14,8 +14,8 @@ import { toast } from "sonner";
 // Form validation schema
 const promptSchema = z.object({
   prompt: z.string().min(3, "Prompt must be at least 3 characters").max(1000),
-  size: z.enum(["1024x1024", "1024x1792", "1792x1024"]).default("1024x1024"),
-  style: z.enum(["vivid", "natural"]).default("vivid"),
+  size: z.enum(["1024x1024", "1024x1792", "1792x1024"]),
+  style: z.enum(["vivid", "natural"]),
 });
 
 type PromptFormValues = z.infer<typeof promptSchema>;
